@@ -6,6 +6,14 @@ import cv2
 import os
 import cvlib as cv
 
+# load the overlay image. size should be smaller than video frame size
+imgM = cv2.imread('C:/Users/chan/PycharmProjects/interface/Database/stars/M/01.png')
+imgF = cv2.imread('C:/Users/chan/PycharmProjects/interface/Database/stars/F/02.png')
+
+# Get Image dimensions
+imgM_height, imgM_width, _ = imgM.shape
+imgF_height, imgF_width, _ = imgF.shape
+
 x = 10
 y = 10
 
@@ -53,6 +61,12 @@ while webcam.isOpened():
 
         # get label with max accuracy
         idx = np.argmax(conf)
+        # print(idx)
+        # add image to frame
+        if idx == 0:
+            frame[y:y + imgF_height, x:x + imgF_width] = imgF
+        else:
+            frame[y:y + imgM_height, x:x + imgM_width] = imgM
         label = classes[idx]
 
         label = "{}: {:.2f}%".format(label, conf[idx] * 100)
